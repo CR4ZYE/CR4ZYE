@@ -25,16 +25,9 @@ class CrazyAssistant:
         self.owner_chat_id = os.environ.get("CRAZY_OWNER_CHAT_ID", "")
 
     def scan(self) -> None:
-        if not self.store.is_enabled():
-            print("Crazy assistant paused.")
-            return
-
         all_messages = []
-        for name, collector in (
-            ("Gmail", self.gmail.fetch_messages),
-            ("Outlook", self.outlook.fetch_messages),
-            ("WhatsApp", self.whatsapp.fetch_messages),
-        ):
+
+        for name, collector in (("WhatsApp", self.whatsapp.fetch_messages),):
             try:
                 all_messages.extend(collector())
             except Exception as exc:  # noqa: BLE001
@@ -43,6 +36,22 @@ class CrazyAssistant:
                 self._notify_owner(error_message)
 
         self._process_commands(all_messages)
+
+        if not self.store.is_enabled():
+            print("Crazy assistant paused.")
+            return
+
+        for name, collector in (
+            ("Gmail", self.gmail.fetch_messages),
+            ("Outlook", self.outlook.fetch_messages),
+        ):
+            try:
+                all_messages.extend(collector())
+            except Exception as exc:  # noqa: BLE001
+                error_message = f"{name} connection failed. Retrying next cycle. Error: {exc}"
+                print(error_message)
+                self._notify_owner(error_message)
+
         tasks = self.engine.detect_tasks(all_messages)
         self.store.upsert_tasks(tasks)
         self.store.update_contact_stats(all_messages)
