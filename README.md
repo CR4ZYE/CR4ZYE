@@ -164,7 +164,7 @@ python run_crazy.py
 
 - Press `Ctrl + C` in both terminals.
 - Or send WhatsApp message `STOP ASSISTANT` to pause scan logic.
-- Crazy will send confirmations back on WhatsApp for STOP/START/STATUS.
+- Crazy will send confirmations back on WhatsApp for STOP/START/STATUS (restricted to `CRAZY_OWNER_CHAT_ID` when configured).
 
 ### Resume
 

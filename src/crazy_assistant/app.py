@@ -65,6 +65,8 @@ class CrazyAssistant:
         for msg in messages:
             if msg.source != "WhatsApp":
                 continue
+            if self.owner_chat_id and msg.thread_id != self.owner_chat_id:
+                continue
             body = msg.body.strip().upper()
             if body == "STOP ASSISTANT":
                 self.store.set_enabled(False)
