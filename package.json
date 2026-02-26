@@ -1,0 +1,14 @@
+{
+  "name": "crazy-assistant",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Local WhatsApp bridge for Crazy assistant",
+  "main": "whatsapp/bridge.js",
+  "scripts": {
+    "whatsapp:bridge": "node whatsapp/bridge.js"
+  },
+  "dependencies": {
+    "@whiskeysockets/baileys": "^6.7.9",
+    "pino": "^9.6.0"
+  }
+}
